@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordToggles = document.querySelectorAll('.toggle-password');
     passwordToggles.forEach(toggle => {
         toggle.addEventListener('click', () => {
-            const input = toggle.previousElementSibling.previousElementSibling; // Ajusta según la estructura exacta del HTML
+            const input = toggle.previousElementSibling.previousElementSibling;
             if (input.type === 'password') {
                 input.type = 'text';
                 toggle.classList.remove('bx-show');
@@ -79,3 +79,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+// Función para simular login social
+function socialLogin(platform) {
+    alert(`Simulando inicio de sesión con ${platform}.`);
+}
