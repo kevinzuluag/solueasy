@@ -1,0 +1,20 @@
+:root {
+  /* 🎨 Colores */
+  --color-primary: #377dff;
+  --color-secondary: #2a9d8f;
+  --color-bg-light: #f2f6fc;
+  --color-bg-dark: #1e1e1e;
+  --color-accent: #df4119;
+
+  /* colores adicionales */
+  --color-bg-dark-2: #3e3e3e;
+
+  /* 🖋️ Tipografía */
+  --font-main: 'Poppins', sans-serif;
+  --font-headings: 'Montserrat', sans-serif;
+
+  /* 🎨 Colores de texto */
+  --text-main: #1e1e1e;
+  --text-light: #666;
+  --text-white: #fff;
+}
