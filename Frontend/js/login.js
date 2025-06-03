@@ -10,59 +10,88 @@ loginButton.addEventListener('click', () => {
     container.classList.remove('active');
 });
 
-// Validación de formularios
+// Validación + conexión al backend
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.querySelector('.form-box.login form');
     const registerForm = document.querySelector('.form-box.register form');
 
     if (loginForm) {
-        loginForm.addEventListener('submit', function (e) {
+        loginForm.addEventListener('submit', async function (e) {
             e.preventDefault();
-            const email = loginForm.querySelector('input[name="email"]');
-            const password = loginForm.querySelector('input[name="password"]');
+            const email = loginForm.querySelector('input[name="email"]').value;
+            const password = loginForm.querySelector('input[name="password"]').value;
 
-            if (!email.value || !password.value) {
+            if (!email || !password) {
                 alert("Completa todos los campos para iniciar sesión.");
                 return;
             }
 
-            if (!email.value.includes('@')) {
-                alert("Correo inválido.");
-                return;
-            }
+            try {
+                const response = await fetch('http://localhost:3000/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
 
-            alert("Inicio de sesión exitoso (modo demo).");
+                const data = await response.json();
+
+                if (!response.ok) {
+                    alert(data.message || 'Error al iniciar sesión');
+                } else {
+                    alert(data.message);
+                    // Aquí podrías redirigir a la pantalla de usuario
+                }
+            } catch (error) {
+                alert('Error de conexión con el servidor.');
+                console.error(error);
+            }
         });
     }
 
     if (registerForm) {
-        registerForm.addEventListener('submit', function (e) {
+        registerForm.addEventListener('submit', async function (e) {
             e.preventDefault();
-            const email = registerForm.querySelector('input[name="email"]');
-            const password = registerForm.querySelector('input[name="password"]');
-            const confirmPassword = registerForm.querySelector('input[name="confirm-password"]');
+            const email = registerForm.querySelector('input[name="email"]').value;
+            const password = registerForm.querySelector('input[name="password"]').value;
+            const confirmPassword = registerForm.querySelector('input[name="confirm-password"]').value;
 
-            if (!email.value || !password.value || !confirmPassword.value) {
+            if (!email || !password || !confirmPassword) {
                 alert("Por favor, completa todos los campos.");
                 return;
             }
 
-            if (!email.value.includes('@')) {
-                alert("Correo inválido.");
-                return;
-            }
-
-            if (password.value !== confirmPassword.value) {
+            if (password !== confirmPassword) {
                 alert("Las contraseñas no coinciden.");
                 return;
             }
 
-            alert("¡Registro exitoso! (modo demo)");
-            container.classList.remove('active'); // Volver al login
+            try {
+                const response = await fetch('http://localhost:3000/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    alert(data.message || 'Error al registrar.');
+                } else {
+                    alert(data.message);
+                    document.querySelector('.container').classList.remove('active');
+                }
+            } catch (error) {
+                alert('Error de conexión con el servidor.');
+                console.error(error);
+            }
         });
     }
 
-    // Mostrar / ocultar contraseña (después de cargar el DOM)
+    // Mostrar/ocultar contraseña
     const passwordToggles = document.querySelectorAll('.toggle-password');
     passwordToggles.forEach(toggle => {
         toggle.addEventListener('click', () => {
